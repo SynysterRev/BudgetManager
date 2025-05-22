@@ -1,0 +1,12 @@
+<div class="flex flex-col justify-start mb-2">
+    <label for="id_{{ widget.name }}" class="text-left mb-1">{{ widget.attrs.title }}</label>
+    <input type="{{ widget.type }}" 
+           name="{{ widget.name }}" 
+           value="{{ widget.value|default:'' }}"
+           class="rounded-sm border-1 p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400
+           {{ widget.attrs.class|default:'' }}"
+           placeholder="{{ widget.attrs.placeholder }}"
+           {% for name, value in widget.attrs.items %}
+               {% if name != 'class' %}{{ name }}="{{ value }}"{% endif %}
+           {% endfor %}>
+</div>

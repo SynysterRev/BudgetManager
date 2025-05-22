@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-indigo: #4f46e5;    
+  --color-success: #0d9488;   
+  --color-alert: #ea580c;      
+  --color-background-light: #f8fafc; 
+  --color-background-important: #ffffff;
+  --color-background-secondary: #f1f5f9;
+  --color-text-main: #374151;   
+  --color-text-secondary: #4b5563;    
+}
+
+@keyframes fade-out {
+  0%, 80% { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateY(20px);
+    visibility: hidden;
+  }
+}
+
+.animate-fade-out {
+  animation: fade-out 4s ease-in-out forwards;
+}

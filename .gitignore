@@ -138,3 +138,6 @@ GitHub.sublime-settings
 .history
 
 .DS_STORE
+
+node_modules
+static/styles/output.css
