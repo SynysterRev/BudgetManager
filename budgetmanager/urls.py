@@ -33,5 +33,6 @@ urlpatterns = [
         ),
         name="login",
     ),
+    path("logout/", LogoutView.as_view(), name="logout"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
