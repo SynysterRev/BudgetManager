@@ -18,8 +18,7 @@
         </button>
     </div>
     <form method="GET" class="bg-background-important w-full flex flex-col p-4 mt-8
-    rounded-lg
-    shadow-md">
+    rounded-lg shadow-md">
         <div class="flex flex-row gap-4">
             <div class="flex flex-1 gap-4">
                 <div class="flex flex-col gap-2 flex-1">
@@ -137,4 +136,24 @@
             </button>
         </div>
     </form>
+
+    <div class="bg-background-important w-full flex flex-col mt-8 py-4
+    rounded-lg shadow-md">
+        <h2 class="font-bold text-text-main text-lg px-4">Transaction list</h2>
+        <div class="border-t-1 border-gray-300 mt-4 flex justify-center items-center
+        py-12">
+            {% if transactions %}
+                {% for transaction in transactions %}
+
+                {% endfor %}
+            {% else %}
+                <div class="flex flex-col gap-2 text-center text-gray-500">
+                <p>No transactions found</p>
+                <p class="text-sm">Add a new transaction to get
+                    started</p>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
 {% endblock content %}
