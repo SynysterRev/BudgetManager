@@ -1,28 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex justify-center items-center h-screen">
-    <div class="mx-auto bg-background-important p-8 text-center rounded-lg w-full max-w-md shadow-lg">
-        <h2 class="text-primary-indigo font-bold text-3xl">Budget Manager</h2>
-        <h3 class="text-text-main text-xl mt-10 font-bold">Create an account</h3>
-        <p class="text-text-secondary my-4">Create an account to start planning your budget</p>
-        <form method="POST">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="flex flex-col justify-start">
-                {{ field.as_widget }}
-                {% for error in field.errors %}
-                <p class="text-alert text-left text-sm">{{error}}</p>
+    <div class="flex justify-center items-center h-screen">
+        <div class="mx-auto bg-background-important p-8 text-center rounded-lg w-full max-w-md shadow-lg">
+            <h2 class="text-primary-indigo font-bold text-3xl">Budget Manager</h2>
+            <h3 class="text-text-main text-xl mt-10 font-bold">Create an account</h3>
+            <p class="text-text-secondary my-4">Create an account to start planning your
+                budget</p>
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="flex flex-col justify-start">
+                        {{ field.as_widget }}
+                    </div>
                 {% endfor %}
-            </div>
-            {% endfor %}
-            <button type="submit" class="rounded-md w-full bg-primary-indigo p-2 my-4 cursor-pointer text-white">Sign
-                up</button>
-            <div class="flex flex-row gap-2 justify-center">
-                <p class="text-text-secondary">Already have an account?</p>
-                <a href="{% url 'login' %}" class="text-primary-indigo hover:underline underline-offset-4">Login</a>
-            </div>
-        </form>
+                <button type="submit"
+                        class="rounded-md w-full bg-primary-indigo p-2 my-4 cursor-pointer text-white">
+                    Sign
+                    up
+                </button>
+                <div class="flex flex-row gap-2 justify-center">
+                    <p class="text-text-secondary">Already have an account?</p>
+                    <a href="{% url 'login' %}"
+                       class="text-primary-indigo hover:underline underline-offset-4">Login</a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock content %}

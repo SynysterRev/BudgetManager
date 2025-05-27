@@ -1,48 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex justify-center items-center h-screen">
-    <div class="mx-auto bg-background-important p-8 text-center rounded-lg w-full max-w-md shadow-lg">
-        <h2 class="text-primary-indigo font-bold text-3xl">Budget Manager</h2>
+    <div class="flex justify-center items-center h-screen">
+        <div class="mx-auto bg-background-important p-8 text-center rounded-lg w-full max-w-md shadow-lg">
+            <h2 class="text-primary-indigo font-bold text-3xl">Budget Manager</h2>
 
-        {% if messages %}
-        <div class="flex flex-col justify-center mt-2">
-            {% for message in messages %}
-            <div class="col-4 text-center">
-                <div class="text-emerald-900 border-1 border-success bg-emerald-300 rounded-md animate-fade-out">
-                    {{ message }}
+            {% if messages %}
+                <div class="flex flex-col justify-center mt-2">
+                    {% for message in messages %}
+                        <div class="col-4 text-center">
+                            <div class="text-emerald-900 border-1 border-success bg-emerald-300 rounded-md animate-fade-out">
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif%}
-        <h3 class="text-text-main text-xl mt-10 font-bold">Sign in to your account</h3>
-        <p class="text-text-secondary my-4">Enter your credentials to access your account</p>
-        <form method="POST">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="flex flex-col justify-start">
-                {{ field.as_widget }}
-                {% for error in field.errors %}
-                <p class="text-alert text-left text-sm">{{error}}</p>
+            {% endif %}
+            <h3 class="text-text-main text-xl mt-10 font-bold">Sign in to your
+                account</h3>
+            <p class="text-text-secondary my-4">Enter your credentials to access your
+                account</p>
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="bg-orange-100 text-alert p-2 rounded-md text-sm my-2 border
+                    border-orange-300">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="flex flex-col justify-start">
+                        {{ field.as_widget }}
+                    </div>
                 {% endfor %}
-            </div>
-            {% endfor %}
-            <button type="submit" class="rounded-md w-full bg-primary-indigo p-2 my-4 cursor-pointer text-white">Sign
-                up</button>
-            <a href="{% url 'login' %}" class="text-primary-indigo hover:underline underline-offset-4">Forgot your
-                password?</a>
-            <div class="flex flex-row gap-2 justify-center my-2">
-                <p class="text-text-secondary">Don't have an account?</p>
-                <a href="{% url 'signup' %}" class="text-primary-indigo hover:underline underline-offset-4">Create
-                    one</a>
-            </div>
-        </form>
+                <button type="submit"
+                        class="rounded-md w-full bg-primary-indigo p-2 my-4 cursor-pointer text-white">
+                    Sign
+                    up
+                </button>
+                <a href="{% url 'login' %}"
+                   class="text-primary-indigo hover:underline underline-offset-4">Forgot
+                    your
+                    password?</a>
+                <div class="flex flex-row gap-2 justify-center my-2">
+                    <p class="text-text-secondary">Don't have an account?</p>
+                    <a href="{% url 'signup' %}"
+                       class="text-primary-indigo hover:underline underline-offset-4">Create
+                        one</a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-<script>
-    setTimeout(() => {
-        document.querySelector('.animate-fade-out')?.remove();
-    }, 4000);
-</script>
+    <script>
+        setTimeout(() => {
+            document.querySelector('.animate-fade-out')?.remove();
+        }, 4000);
+    </script>
 {% endblock content %}

@@ -7,7 +7,6 @@ from widgets.widgets import InputWidget
 
 
 class SignupForm(UserCreationForm):
-
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
         fields = ["email"]
@@ -20,6 +19,7 @@ class SignupForm(UserCreationForm):
                 }
             ),
         }
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -42,7 +42,8 @@ class SignupForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     username = forms.EmailField(
         widget=InputWidget(
-            attrs={"title": "Email", "placeholder": "Enter your email", "type": "email"}
+            attrs={"title": "Email", "placeholder": "Enter your email", "type":
+                "email", "autocomplete": "email", "name": "email",}
         ),
     )
     password = forms.CharField(
