@@ -7,10 +7,10 @@ register = template.Library()
 def active_classes(context, url_name):
     request = context['request']
     is_active = request.resolver_match.url_name == url_name
-    print(url_name)
-    base = ("font-bold w-full h-full flex px-6 py-4 "
+    base = ("font-bold w-full h-full flex px-6 py-3 "
             "text-center duration-150 transition-colors")
     if is_active:
-        return f"{base} bg-indigo-300/30 text-primary-indigo"
+        return (f"{base} bg-indigo-300/30 text-primary-indigo border-r-4 "
+                f"border-primary-indigo")
     else:
         return f"{base} hover:bg-black/10"

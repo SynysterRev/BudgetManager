@@ -11,10 +11,57 @@
 </head>
 
 <body class="bg-background-light h-screen">
-<div class="flex">
+<div class="lg:flex">
     {% if request.user.is_authenticated %}
-        <header class="flex-1 max-w-sm">
-            <div class="bg-background-important flex flex-col min-h-screen py-4">
+        <header class="lg:hidden flex justify-between
+        bg-background-important py-4">
+            <h1 class="text-primary-indigo font-bold text-2xl mx-6">
+                BudgetManager</h1>
+            <button data-collapse-toggle="navbar-hamburger" type="button"
+                    class="p-2 w-10 h-10 text-sm rounded-lg mx-6 cursor-pointer"
+                    aria-controls="navbar-hamburger" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round"
+                          stroke-linejoin="round" stroke-width="2"
+                          d="M1 1h15M1 7h15M1 13h15"/>
+                </svg>
+            </button>
+            <div class="hidden w-full md:hidden fixed inset-0 backdrop-blur-sm"
+                 id="navbar-hamburger">
+                <div class="bg-background-important">
+                    <ul class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+                        <li>
+                            <a href="#home"
+                               class="block w-full text-left text-gray-200 hover:text-red-500 capitalize
+          py-2 transition-colors duration-300 font-bold"
+                               aria-current="page">Accueil</a>
+                        </li>
+                        <li>
+                            <a href="#about"
+                               class="block w-full text-left text-gray-200 hover:text-red-500 capitalize
+          py-2 transition-colors duration-300 font-bold">À
+                                propos</a>
+                        </li>
+                        <li>
+                            <a href="#services"
+                               class="block w-full text-left text-gray-200 hover:text-red-500 capitalize
+          py-2 transition-colors duration-300 font-bold">Services</a>
+                        </li>
+                        <li>
+                            <a href="#contact"
+                               class="block w-full text-left text-gray-200 hover:text-red-500 capitalize
+          py-2 transition-colors duration-300 font-bold">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="hidden lg:flex w-64">
+            <div class="bg-background-important flex flex-col min-h-screen py-4 w-full">
                 <h1 class="text-primary-indigo font-bold text-2xl mx-6">
                     BudgetManager</h1>
                 <nav class="flex-1">
@@ -33,7 +80,8 @@
                             </span>Dashboard</a>
                         </li>
                         <li>
-                            <a href="" class="{% active_classes 'expenses' %}">
+                            <a href="{% url 'expenses' %}"
+                               class="{% active_classes 'expenses' %}">
                             <span class="mr-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 24 24"
@@ -91,20 +139,15 @@
                     </button>
                 </form>
             </div>
-        </header>
+        </div>
+        <script>
+            document.querySelector('[data-collapse-toggle="navbar-hamburger"]').addEventListener('click', function () {
+                const menu = document.getElementById('navbar-hamburger');
+                menu.classList.toggle('hidden');
+            });
+        </script>
     {% endif %}
-    <main class="flex-1 p-6">
-        {% if messages %}
-            <div class="flex flex-col justify-center mt-2">
-                {% for message in messages %}
-                    <div class="col-4 text-center">
-                        <div class="text-emerald-900 border-1 border-success bg-emerald-300 rounded-md animate-fade-out">
-                            {{ message }}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+    <main class="flex flex-1 justify-center lg:block lg:justify-normal p-6">
         {% block content %}{% endblock content %}
     </main>
 </div>

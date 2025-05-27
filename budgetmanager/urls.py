@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView, LoginView
 from django.urls import include, path
 
-from expenses.views import DashboardView
+from expenses.views import DashboardView, ExpenseView
 from users.forms import LoginForm
 from users.views import SignupView
 
@@ -37,5 +37,6 @@ urlpatterns = [
     ),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("", DashboardView.as_view(), name="dashboard"),
+    path("/expenses", ExpenseView.as_view(), name="expenses"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
