@@ -143,3 +143,4 @@ GitHub.sublime-settings
 
 node_modules
 static/styles/output.css
+.vscode/settings.json

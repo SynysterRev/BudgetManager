@@ -16,10 +16,12 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import include, path
-from users.views import SignupView
 from django.contrib.auth.views import LogoutView, LoginView
+from django.urls import include, path
+
+from expenses.views import DashboardView
 from users.forms import LoginForm
+from users.views import SignupView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -34,5 +36,6 @@ urlpatterns = [
         name="login",
     ),
     path("logout/", LogoutView.as_view(), name="logout"),
+    path("", DashboardView.as_view(), name="dashboard"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
