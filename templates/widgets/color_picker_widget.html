@@ -1,0 +1,14 @@
+<div class="flex flex-col justify-start mb-2 mt-2">
+    <label for="id_{{ widget.name }}"
+           class="text-left mb-1">{{ widget.attrs.title }}
+    </label>
+    <div class="grid grid-cols-6 gap-3 mt-2">
+        {% for color in widget.attrs.colors %}
+            <button type="button" class="w-8 h-8 rounded-full transition-all
+            duration-200 hover:scale-110 color-option" style="background-color
+            :{{ color }}"
+                    aria-label="Color {{ color }}">
+            </button>
+        {% endfor %}
+    </div>
+</div>

@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, CreateView
 
+from expenses.forms import CreateCategoryForm
 from expenses.models import Transaction, Category
 
 
@@ -18,5 +20,29 @@ class ExpenseView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['transaction_types'] = Transaction.TRANSACTION_TYPES
 
-        context['categories'] = Category.objects.filter(user=self.request.user)
+        categories = Category.objects.filter(user=self.request.user)
+        context['categories'] = [category.name for category in categories]
         return context
+
+    def get_queryset(self):
+        return Transaction.objects.filter(user=self.request.user)
+
+
+class CategoryView(LoginRequiredMixin, ListView):
+    model = Category
+    template_name = "expenses/category_page.html"
+    context_object_name = "categories"
+    paginate_by = 20
+
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
+
+
+class CategoryFormView(LoginRequiredMixin, CreateView):
+    form_class = CreateCategoryForm
+    template_name = "expenses/partials/create_category.html"
+    success_url = reverse_lazy('categories')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="flex flex-col md:flex-row justify-between">
+        <h1 class="font-bold text-text-main text-2xl mb-4">Categories</h1>
+        <button id="add-category-btn" class="flex items-center bg-indigo-500 rounded-md
+            px-6 text-white cursor-pointer shadow-sm duration-300 transition-colors
+            hover:bg-violet-700 font-bold">
+            <span class="mr-2 relative top-[1px]">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="16" height="16"
+                 viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"/>
+            </svg>
+            </span>
+            Add Category
+        </button>
+    </div>
+
+    <div class="bg-background-important w-full flex flex-col mt-8 py-4
+    rounded-lg shadow-md">
+        <h2 class="font-bold text-text-main text-lg px-4">Category list</h2>
+        <div class="border-t-1 border-gray-300 mt-4 flex justify-center items-center
+        py-4">
+            {% if categories %}
+                <div class=" w-full grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2
+                px-4 gap-4">
+                    {% for category in categories %}
+                        {% include 'expenses/partials/category_card.html' with category=category %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="flex flex-col gap-2 text-center text-gray-500">
+                    <p>No categories found</p>
+                    <p class="text-sm">Add a new category to get
+                        started</p>
+                </div>
+            {% endif %}
+        </div>
+        <div id="create-category-modal"
+             class="hidden fixed inset-0 bg-gray-800/30 flex justify-center items-center">
+        </div>
+    </div>
+    <script>
+        function initializeColorPicker() {
+            const colors = document.querySelectorAll(".color-option");
+            colors.forEach(color => {
+                color.addEventListener("click", (event) => {
+                    colors.forEach(opt => opt.classList.remove('ring-offset-2',
+                        'ring-2', 'ring-gray-400', 'scale-110'));
+                    color.classList.add('ring-offset-2', 'ring-2', 'ring-gray-400', 'scale-110');
+                });
+            });
+        }
+
+        function initiliazeModalClose() {
+            const modalClose = document.querySelector("#modal-close");
+            if (modalClose) {
+                modalClose.addEventListener('click', () => {
+                    document.querySelector("#create-category-modal").classList.add("hidden");
+                });
+            }
+            const modalCancel = document.querySelector("#modal-cancel");
+            if (modalCancel) {
+                modalCancel.addEventListener('click', () => {
+                    document.querySelector("#create-category-modal").classList.add("hidden");
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", (event) => {
+            const addBtn = document.querySelector("#add-category-btn");
+            const modal = document.querySelector("#create-category-modal");
+            const modalContent = modal.querySelector("form");
+            if (addBtn) {
+                addBtn.addEventListener("click", (event) => {
+                    fetch("/categories/create/")
+                        .then(response => response.text())
+                        .then(html => {
+                                modal.innerHTML = html;
+                                modal.classList.toggle("hidden");
+
+                                initializeColorPicker();
+                                initiliazeModalClose();
+                            }
+                        )
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
+            }
+            modal.addEventListener("click", (event) => {
+                if (event.target === modal) {
+                    modal.classList.add("hidden");
+                }
+            });
+        });
+    </script>
+{% endblock content %}

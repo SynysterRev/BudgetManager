@@ -70,8 +70,8 @@
                     <option value="">All Categories</option>
                     {% for category in categories %}
                         <option value="{{ category }}"
-                                {% if request.GET.category == value %}selected{% endif %}>
-                            {{ label }}
+                                {% if request.GET.category == category %}selected{% endif %}>
+                            {{ category }}
                         </option>
                     {% endfor %}
                 </select>
