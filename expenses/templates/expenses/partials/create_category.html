@@ -12,7 +12,8 @@
             </svg>
         </button>
     </div>
-    <form class="border-t-1 border-gray-500 mt-4 p-6" method="POST">
+    <form class="border-t-1 border-gray-500 mt-4 p-6" method="POST" action="
+{% url 'create_category' %}">
         {% csrf_token %}
         {% for field in form %}
             <div class="flex flex-col justify-start">

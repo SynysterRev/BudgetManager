@@ -1,0 +1,29 @@
+import {initializeColorPicker} from "./color_picker.js";
+import {initializeModalClose} from "./modal.js";
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    const addBtn = document.querySelector("#add-category-btn");
+    const modal = document.querySelector("#create-modal");
+    if (addBtn) {
+        addBtn.addEventListener("click", (event) => {
+            fetch("/categories/create/")
+                .then(response => response.text())
+                .then(html => {
+                        modal.innerHTML = html;
+                        modal.classList.toggle("hidden");
+
+                        initializeColorPicker();
+                        initializeModalClose();
+                    }
+                )
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    }
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.classList.add("hidden");
+        }
+    });
+});

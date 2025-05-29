@@ -35,7 +35,7 @@ class CategoryView(LoginRequiredMixin, ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Category.objects.filter(user=self.request.user)
+        return Category.objects.filter(user=self.request.user).order_by('name')
 
 
 class CategoryFormView(LoginRequiredMixin, CreateView):
