@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView, CreateView, DeleteView
 
 from expenses.forms import CreateCategoryForm
 from expenses.models import Transaction, Category
@@ -46,3 +46,12 @@ class CategoryFormView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
+    model = Category
+    success_url = reverse_lazy('categories')
+
+    def get_object(self, queryset = ...):
+        return Category.objects.get(user=self.request.user, name=self.kwargs["name"])
+

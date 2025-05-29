@@ -19,7 +19,8 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView, LoginView
 from django.urls import include, path
 
-from expenses.views import DashboardView, ExpenseView, CategoryView, CategoryFormView
+from expenses.views import DashboardView, ExpenseView, CategoryView, CategoryFormView, \
+    CategoryDeleteView
 from users.forms import LoginForm
 from users.views import SignupView
 
@@ -40,5 +41,7 @@ urlpatterns = [
     path("expenses/", ExpenseView.as_view(), name="expenses"),
     path("categories/", CategoryView.as_view(), name="categories"),
     path("categories/create/", CategoryFormView.as_view(), name="create_category"),
+    path("categories/delete/<str:name>/", CategoryDeleteView.as_view(),
+         name="delete_category"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
