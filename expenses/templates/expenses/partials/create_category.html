@@ -1,7 +1,8 @@
 <div class="bg-background-important rounded-lg border-1 border-b-gray-400 p-4
     max-w-md w-full">
     <div class="flex flex-row justify-between">
-        <h2 class="font-bold text-text-main text-xl">Add New Category</h2>
+        <h2 class="font-bold text-text-main text-xl">{% if form.instance.pk %}Edit
+        {% else %}Add New {% endif %}Category</h2>
         <button id="modal-close" class="cursor-pointer hover:text-alert">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -13,7 +14,11 @@
         </button>
     </div>
     <form class="border-t-1 border-gray-500 mt-4 p-6" method="POST" action="
-{% url 'create_category' %}">
+    {% if form.instance.pk %}
+        {% url 'edit_category' form.instance.name %}
+    {% else %}
+        {% url 'create_category' %}
+    {% endif %}">
         {% csrf_token %}
         {% for field in form %}
             <div class="flex flex-col justify-start">
@@ -30,7 +35,8 @@
                     class="rounded-md bg-primary-indigo py-2 cursor-pointer
                     text-white hover:bg-violet-700 px-4 transition-colors
                     duration-300 focus:outline-none focus:ring-2 focus:ring-violet-700">
-                Add Category
+                {% if form.instance.pk %}Edit
+                {% else %}Add {% endif %} Category
             </button>
         </div>
     </form>

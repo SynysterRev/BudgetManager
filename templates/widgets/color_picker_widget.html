@@ -6,7 +6,7 @@
     <div class="grid grid-cols-6 gap-3 mt-2">
         {% for color in widget.attrs.colors %}
             <button type="button" class="w-8 h-8 rounded-full transition-all
-            duration-200 hover:scale-110 color-option" style="background-color
+            duration-200 hover:scale-110 color-option cursor-pointer" style="background-color
             :{{ color }}"
                     data-color="{{ color }}"
                     aria-label="Color {{ color }}">

@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView, DeleteView
+from django.views.generic import TemplateView, ListView, CreateView, DeleteView, \
+    UpdateView
 
 from expenses.forms import CreateCategoryForm
 from expenses.models import Transaction, Category
@@ -38,7 +39,8 @@ class CategoryView(LoginRequiredMixin, ListView):
         return Category.objects.filter(user=self.request.user).order_by('name')
 
 
-class CategoryFormView(LoginRequiredMixin, CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
+    model = Category
     form_class = CreateCategoryForm
     template_name = "expenses/partials/create_category.html"
     success_url = reverse_lazy('categories')
@@ -48,10 +50,22 @@ class CategoryFormView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class CategoryEditView(LoginRequiredMixin, UpdateView):
+    model = Category
+    form_class = CreateCategoryForm
+    template_name = "expenses/partials/create_category.html"
+    success_url = reverse_lazy('categories')
+
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
+
+    def get_object(self, queryset=...):
+        return Category.objects.get(user=self.request.user, name=self.kwargs["name"])
+
+
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = Category
     success_url = reverse_lazy('categories')
 
-    def get_object(self, queryset = ...):
+    def get_object(self, queryset=...):
         return Category.objects.get(user=self.request.user, name=self.kwargs["name"])
-

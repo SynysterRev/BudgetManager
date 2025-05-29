@@ -7,9 +7,10 @@ flex flex-col p-2 hover:shadow-md transition-all duration-300">
             <h3 class="text-text-main text-lg font-bold">{{ category.name }}</h3>
         </div>
         <div class="flex items-center gap-3">
-            <button class="text-text-secondary cursor-pointer
-            hover:text-primary-indigo transition-colors duration-300"
-                    aria-label="Edit {{ category.name }} category">
+            <button id="edit-{{ category.name }}-btn" class="text-text-secondary cursor-pointer
+            hover:text-primary-indigo transition-colors duration-300 edit-category"
+                    aria-label="Edit {{ category.name }} category"
+                    data-category="{{ category.name }}" data-color="{{ category.color }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

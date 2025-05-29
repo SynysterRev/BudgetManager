@@ -12,7 +12,10 @@
 
 <body class="bg-background-light h-screen">
 <div class="lg:flex">
-    {% include 'partials/nav_bar.html' %}
+
+    {% if request.user.is_authenticated %}
+        {% include 'partials/nav_bar.html' %}
+    {% endif %}
     <main class="flex flex-1 justify-center lg:block lg:justify-normal p-6">
         {% block content %}{% endblock content %}
     </main>
