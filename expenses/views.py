@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.template.loader import get_template
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, DeleteView, \
     UpdateView
 
 from expenses.forms import CreateCategoryForm, CreateTransactionForm
 from expenses.models import Transaction, Category
-
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "expenses/dashboard.html"

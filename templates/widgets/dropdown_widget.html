@@ -12,7 +12,7 @@
         {% endif %}
         {% for option in widget.attrs.options %}
             <option value="{{ option.id }}"
-                    {% if request.GET.option == option.name %}selected{% endif %}>
+                    {% if option.id|stringformat:"s" == widget.value.0|stringformat:"s" %}selected{% endif %}>
                 {{ option.name }}
             </option>
         {% endfor %}
