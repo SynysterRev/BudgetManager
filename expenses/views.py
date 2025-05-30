@@ -39,21 +39,21 @@ class ExpenseCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         response = super().form_valid(form)
+
+        if self.request.method == "POST":
+            return JsonResponse({
+                'success': True,
+                'message': 'Transaction created successfully!'
+            })
+
         return response
-        # if self.request.method == "POST":
-        #     return JsonResponse({
-        #         'success': True,
-        #         'message': 'Transaction created successfully!'
-        #     })
-        #
-        # return response
 
     def form_invalid(self, form):
-        # if self.request.method == "POST":
-        #     return JsonResponse({
-        #         'success': False,
-        #         'errors': form.errors
-        #     })
+        if self.request.method == "POST":
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            })
 
         return super().form_invalid(form)
 
@@ -79,12 +79,11 @@ class ExpenseEditView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         response = super().form_valid(form)
-        return response
-        # if self.request.method == "POST":
-        #     return JsonResponse({
-        #         'success': True,
-        #         'message': 'Transaction created successfully!'
-        #     })
+        if self.request.method == "POST":
+            return JsonResponse({
+                'success': True,
+                'message': 'Transaction created successfully!'
+            })
 
         return response
 

@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         modal.classList.toggle("hidden");
 
                         initializeModalClose();
-                        // initializeTransactionForm();
+                        initializeTransactionForm();
                     }
                 )
                 .catch(error => {
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         modal.classList.toggle("hidden");
 
                         initializeModalClose();
-                        // initializeTransactionForm();
+                        initializeTransactionForm();
                     }
                 )
                 .catch(error => {

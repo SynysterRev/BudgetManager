@@ -35,7 +35,7 @@ export function initializeTransactionForm() {
                 .then(data => {
                     if (data.success) {
                         form.reset();
-                        document.querySelector("#create-modal").classList.add("hidden");
+                        window.location.reload()
                     } else {
                         for (const fieldName in data.errors) {
                             const errorDiv = document.getElementById(`error-${fieldName}`);
