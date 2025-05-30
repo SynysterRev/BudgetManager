@@ -27,7 +27,12 @@ class ExpenseView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return Transaction.objects.filter(user=self.request.user).order_by('datetime')
+        transactions = Transaction.objects.filter(user=self.request.user).order_by('datetime')
+        # page is reloaded every time, check with JS or HTMX to avoid the reloading
+        category = self.request.GET.get("category")
+        if category:
+            transactions = transactions.filter(category__name=category)
+        return transactions
 
 
 class ExpenseCreateView(LoginRequiredMixin, CreateView):

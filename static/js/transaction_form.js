@@ -45,4 +45,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
             modal.classList.add("hidden");
         }
     });
+    const categoryType = document.querySelector("#category_type");
+    categoryType.addEventListener("change", (event) => {
+        let params = new URLSearchParams(location.search);
+        if (categoryType.value) {
+            params.set('category', categoryType.value);
+        }
+        else {
+            params.delete('category');
+        }
+        window.location.search = params.toString();
+    });
+
 });
