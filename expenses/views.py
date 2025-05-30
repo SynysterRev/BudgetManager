@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.template.loader import get_template
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, DeleteView, \
     UpdateView
 
 from expenses.forms import CreateCategoryForm, CreateTransactionForm
 from expenses.models import Transaction, Category
+
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "expenses/dashboard.html"
@@ -27,7 +27,8 @@ class ExpenseView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        transactions = Transaction.objects.filter(user=self.request.user).order_by('datetime')
+        transactions = Transaction.objects.filter(user=self.request.user).order_by(
+            'datetime')
         # page is reloaded every time, check with JS or HTMX to avoid the reloading
         category = self.request.GET.get("category")
         if category:
