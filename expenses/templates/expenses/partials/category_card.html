@@ -47,12 +47,11 @@ flex flex-col p-2 hover:shadow-md transition-all duration-300">
             <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path>
             <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle>
         </svg>
-        <p class="text-text-main">{{ category.transactions|length }}
-            {% if category.transactions|length > 0 %}transactions
+        <p class="text-text-main">{{ category.transactions.count }}
+            {% if category.transactions.count > 0 %}transactions
             {% else %}transaction {% endif %}</p>
     </div>
-        <p>{{ category.transactions|length }}</p>
-    {% if category.transactions|length > 0 %}
+    {% if category.transactions.count > 0 %}
         <div class="mt-3 flex items-center border-t-1 border-gray-200 py-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                  viewBox="0 0 24 24"
