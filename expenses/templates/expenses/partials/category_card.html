@@ -51,6 +51,7 @@ flex flex-col p-2 hover:shadow-md transition-all duration-300">
             {% if category.transactions|length > 0 %}transactions
             {% else %}transaction {% endif %}</p>
     </div>
+        <p>{{ category.transactions|length }}</p>
     {% if category.transactions|length > 0 %}
         <div class="mt-3 flex items-center border-t-1 border-gray-200 py-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"

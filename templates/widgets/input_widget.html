@@ -17,10 +17,5 @@
         {% if name not in 'class,title,placeholder,required,disabled' %}{{ name }}="
             {{ value }}"{% endif %}
     {% endfor %}/>
-    {% if field.errors %}
-        {% for error in field.errors %}
-            <p class="text-alert text-left text-sm">{{ error }}</p>
-        {% endfor %}
-    {% endif %}
-
+    <p class="text-alert text-left text-sm" id="error-{{ widget.name }}"></p>
 </div>

@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
+{% block head_scripts %}
+    {% load static %}
+    <script type="module" src="{% static 'js/transaction_form.js' %}" defer></script>
+{% endblock head_scripts %}
+
 {% block content %}
     <div class="flex flex-col md:flex-row justify-between">
         <h1 class="font-bold text-text-main text-2xl mb-4">Transactions</h1>
-        <button class="flex items-center justify-center bg-indigo-500 rounded-md
+        <button id="add-transaction-btn" class="flex items-center justify-center
+        bg-indigo-500 rounded-md
             px-6 text-white cursor-pointer shadow-sm duration-300 transition-colors
             hover:bg-violet-700 font-bold">
             <span class="mr-2">
@@ -98,6 +104,7 @@
                 </div>
             </div>
         </div>
+
         <div class="w-full h-[1px] bg-gray-300/30 mt-4 rounded-lg"></div>
         <div class="flex flex-row justify-between mt-4">
             <div class="text-primary-indigo flex items-center space-x-4">
@@ -140,20 +147,36 @@
     <div class="bg-background-important w-full flex flex-col mt-8 py-4
     rounded-lg shadow-md">
         <h2 class="font-bold text-text-main text-lg px-4">Transaction list</h2>
-        <div class="border-t-1 border-gray-300 mt-4 flex justify-center items-center
-        py-12">
+        <div class="mt-4 flex justify-center items-center">
             {% if transactions %}
-                {% for transaction in transactions %}
-
-                {% endfor %}
+                <div class="w-full">
+                    <table class="min-w-full">
+                        <thead class="border-y-1 border-gray-300 text-sm text-text-secondary">
+                        <tr>
+                            <th class="py-3 text-left px-4">Date</th>
+                            <th class="py-3 text-left px-4">Description</th>
+                            <th class="py-3 text-left px-4">Category</th>
+                            <th class="py-3 text-right px-4">Amount</th>
+                            <th class="py-3 text-center px-4">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for transaction in transactions %}
+                            {% include 'expenses/partials/transaction_card.html' with transaction=transaction %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
                 <div class="flex flex-col gap-2 text-center text-gray-500">
-                <p>No transactions found</p>
-                <p class="text-sm">Add a new transaction to get
-                    started</p>
+                    <p>No transactions found</p>
+                    <p class="text-sm">Add a new transaction to get
+                        started</p>
                 </div>
             {% endif %}
         </div>
-
+        <div id="create-modal"
+             class="hidden fixed inset-0 bg-gray-800/30 flex justify-center items-center">
+        </div>
     </div>
 {% endblock content %}

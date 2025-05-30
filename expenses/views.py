@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, DeleteView, \
     UpdateView
 
-from expenses.forms import CreateCategoryForm
+from expenses.forms import CreateCategoryForm, CreateTransactionForm
 from expenses.models import Transaction, Category
 
 
@@ -26,7 +27,89 @@ class ExpenseView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
+        return Transaction.objects.filter(user=self.request.user).order_by('datetime')
+
+
+class ExpenseCreateView(LoginRequiredMixin, CreateView):
+    model = Transaction
+    template_name = "expenses/partials/create_transaction.html"
+    form_class = CreateTransactionForm
+    success_url = reverse_lazy('expenses')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        return response
+        # if self.request.method == "POST":
+        #     return JsonResponse({
+        #         'success': True,
+        #         'message': 'Transaction created successfully!'
+        #     })
+        #
+        # return response
+
+    def form_invalid(self, form):
+        # if self.request.method == "POST":
+        #     return JsonResponse({
+        #         'success': False,
+        #         'errors': form.errors
+        #     })
+
+        return super().form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+
+class ExpenseEditView(LoginRequiredMixin, UpdateView):
+    model = Transaction
+    form_class = CreateTransactionForm
+    template_name = "expenses/partials/create_transaction.html"
+    success_url = reverse_lazy('expenses')
+
+    def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
+
+    def get_object(self, queryset=...):
+        return Transaction.objects.get(user=self.request.user, id=self.kwargs[
+            "expense_id"])
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        return response
+        # if self.request.method == "POST":
+        #     return JsonResponse({
+        #         'success': True,
+        #         'message': 'Transaction created successfully!'
+        #     })
+
+        return response
+
+    def form_invalid(self, form):
+        if self.request.method == "POST":
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            })
+
+        return super().form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+
+class ExpenseDeleteView(LoginRequiredMixin, DeleteView):
+    model = Transaction
+    success_url = reverse_lazy('expenses')
+
+    def get_object(self, queryset=...):
+        return Transaction.objects.get(user=self.request.user, id=self.kwargs[
+            "expense_id"])
 
 
 class CategoryView(LoginRequiredMixin, ListView):

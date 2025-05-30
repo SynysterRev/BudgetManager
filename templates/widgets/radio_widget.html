@@ -1,0 +1,17 @@
+<div class="flex flex-col mb-2">
+    <label for="id_{{ widget.name }}" class="mb-1">{{ widget.attrs.title }}</label>
+    <div class="flex gap-3">
+        {% for group, options, index in widget.optgroups %}
+            {% for option in options %}
+                <label for="id_{{ option.value }}">
+                    <input type="radio" name="{{ option.name }}"
+                           id="id_{{ option.value }}"
+                           value="{{ option.value }}"
+                           class="mr-1"
+                           {% if option.selected %}checked="checked"{% endif %}/>
+                    <span>{{ option.label }}</span></label>
+            {% endfor %}
+        {% endfor %}
+        <p class="text-alert text-left text-sm" id="error-{{ widget.name }}"></p>
+    </div>
+</div>

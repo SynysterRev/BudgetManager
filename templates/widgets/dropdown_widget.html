@@ -1,0 +1,21 @@
+<div class="flex flex-col gap-1 mb-2">
+    <label for="id_{{ widget.name }}">{{ widget.attrs.title }}</label>
+    <select id="id_{{ widget.name }}"
+            name="{{ widget.name }}"
+            {% if widget.attrs.required %}required{% endif %}
+            {% if widget.attrs.disabled %}disabled{% endif %}
+            class="border-1 rounded-md px-3 py-2 border-gray-500/30
+                        focus:ring-2
+                focus:ring-violet-700 {{ widget.attrs.class|default:'' }}">
+        {% if widget.attrs.default_value %}
+            <option value="">{{ widget.attrs.default_value }}</option>
+        {% endif %}
+        {% for option in widget.attrs.options %}
+            <option value="{{ option.id }}"
+                    {% if request.GET.option == option.name %}selected{% endif %}>
+                {{ option.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <p class="text-alert text-left text-sm" id="error-{{ widget.name }}"></p>
+</div>

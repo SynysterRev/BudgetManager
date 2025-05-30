@@ -1,0 +1,11 @@
+<div class="flex flex-col gap-1">
+    <label for="id_{{ widget.name }}">{{ widget.attrs.title }}</label>
+    <input id="id_{{ widget.name }}"
+           name="{{ widget.name }}"
+           type="date"
+           value="{{ widget.value }}"
+           class="w-full border-1 rounded-md px-3 py-2
+                           border-gray-500/30
+                       focus:ring-2 focus:ring-violet-700 focus:outline-none"/>
+    <p class="text-alert text-left text-sm" id="error-{{ widget.name }}"></p>
+</div>

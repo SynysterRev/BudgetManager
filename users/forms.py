@@ -7,7 +7,7 @@ from widgets.widgets import InputWidget
 
 
 class SignupForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = get_user_model()
         fields = ["email"]
         widgets = {

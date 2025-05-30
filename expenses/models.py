@@ -13,6 +13,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
     class Meta:
         verbose_name_plural = "Categories"
 
@@ -31,5 +32,6 @@ class Transaction(models.Model):
                                  related_name="transactions")
     amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[
         MinValueValidator(0)])
-    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
+    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES,
+                                        default="income")
     created_at = models.DateTimeField(auto_now_add=True)
