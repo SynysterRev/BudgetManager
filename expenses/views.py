@@ -47,6 +47,10 @@ class ExpenseView(LoginRequiredMixin, ListView):
         elif end_date:
             transactions = transactions.filter(datetime__lte=end_date)
 
+        search = self.request.GET.get("search")
+        if search:
+            transactions = transactions.filter(description__icontains=search)
+
         return transactions
 
 

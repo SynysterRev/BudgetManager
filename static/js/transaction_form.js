@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             modal.classList.add("hidden");
         }
     });
-    const filterFields = ["category_type", "start_date", "end_date", "transaction_type"]
+    const filterFields = ["category_type", "start_date", "end_date", "transaction_type", "search"]
 
     filterFields.forEach((fieldId) => {
         const field = document.getElementById(fieldId);
