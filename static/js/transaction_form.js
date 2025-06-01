@@ -45,16 +45,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
             modal.classList.add("hidden");
         }
     });
-    const categoryType = document.querySelector("#category_type");
-    categoryType.addEventListener("change", (event) => {
-        let params = new URLSearchParams(location.search);
-        if (categoryType.value) {
-            params.set('category', categoryType.value);
-        }
-        else {
-            params.delete('category');
-        }
-        window.location.search = params.toString();
-    });
+    const filterFields = ["category_type", "start_date", "end_date", "transaction_type"]
 
+    filterFields.forEach((fieldId) => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener("change", (event) => {
+                let params = new URLSearchParams(location.search);
+
+                if (field.value) {
+                    params.set(field.name, field.value);
+                } else {
+                    params.delete(field.name);
+                }
+                window.location.search = params.toString();
+            });
+        }
+    });
 });
