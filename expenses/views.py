@@ -1,10 +1,16 @@
+import csv
+import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.db.models import Sum, Case, When, F, DecimalField
+from django.http import JsonResponse, HttpResponse
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView, DeleteView, \
     UpdateView
 
 from expenses.forms import CreateCategoryForm, CreateTransactionForm
+from expenses.mixins import TransactionFilterMixin
 from expenses.models import Transaction, Category
 
 
@@ -12,7 +18,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "expenses/dashboard.html"
 
 
-class ExpenseView(LoginRequiredMixin, ListView):
+class ExpenseView(LoginRequiredMixin, TransactionFilterMixin, ListView):
     model = Transaction
     template_name = "expenses/expense_page.html"
     context_object_name = "transactions"
@@ -24,34 +30,24 @@ class ExpenseView(LoginRequiredMixin, ListView):
 
         categories = Category.objects.filter(user=self.request.user)
         context['categories'] = [category.name for category in categories]
+
+        balance = Transaction.objects.aggregate(
+            balance=Sum(
+                Case(
+                    When(transaction_type='expense', then=-F('amount')),
+                    When(transaction_type='income', then=F('amount')),
+                    default=0,
+                    output_field=DecimalField(),
+                )
+            )
+        )['balance'] or 0
+
+        context['balance'] = balance
+
         return context
 
     def get_queryset(self):
-        transactions = Transaction.objects.filter(user=self.request.user).order_by(
-            'datetime')
-        # page is reloaded every time, check with JS or HTMX to avoid the reloading
-        category = self.request.GET.get("category_type")
-        if category:
-            transactions = transactions.filter(category__name=category)
-
-        transaction_type = self.request.GET.get("transaction_type")
-        if transaction_type:
-            transactions = transactions.filter(transaction_type=transaction_type)
-
-        start_date = self.request.GET.get("start_date")
-        end_date = self.request.GET.get("end_date")
-        if start_date and end_date:
-            transactions = transactions.filter(datetime__range=[start_date, end_date])
-        elif start_date:
-            transactions = transactions.filter(datetime__gte=start_date)
-        elif end_date:
-            transactions = transactions.filter(datetime__lte=end_date)
-
-        search = self.request.GET.get("search")
-        if search:
-            transactions = transactions.filter(description__icontains=search)
-
-        return transactions
+        return self.get_filtered_queryset(self.request)
 
 
 class ExpenseCreateView(LoginRequiredMixin, CreateView):
@@ -133,6 +129,25 @@ class ExpenseDeleteView(LoginRequiredMixin, DeleteView):
     def get_object(self, queryset=...):
         return Transaction.objects.get(user=self.request.user, id=self.kwargs[
             "expense_id"])
+
+
+class ExpenseExportCSV(LoginRequiredMixin, TransactionFilterMixin, View):
+    def get(self, request, *args, **kwargs):
+        today_date = datetime.datetime.today().strftime('%Y-%m-%d')
+        csv_name = f"transactions-{today_date}.csv"
+        response = HttpResponse(content_type="text/csv",
+                                headers={
+                                    "Content-Disposition": f"attachment; filename= {csv_name}"}, )
+
+        writer = csv.writer(response)
+        writer.writerow(["Date", "Description", "Category", "Type", "Amount"])
+        transactions = self.get_filtered_queryset(self.request)
+        for transaction in transactions:
+            writer.writerow([transaction.datetime, transaction.description,
+                             transaction.category, transaction.transaction_type,
+                             transaction.amount])
+
+        return response
 
 
 class CategoryView(LoginRequiredMixin, ListView):

@@ -21,7 +21,7 @@ from django.urls import include, path
 
 from expenses.views import DashboardView, ExpenseView, CategoryView, CategoryCreateView, \
     CategoryDeleteView, CategoryEditView, ExpenseCreateView, ExpenseEditView, \
-    ExpenseDeleteView
+    ExpenseDeleteView, ExpenseExportCSV
 from users.forms import LoginForm
 from users.views import SignupView
 
@@ -52,5 +52,6 @@ urlpatterns = [
          name="edit_category"),
     path("categories/<str:name>/delete/", CategoryDeleteView.as_view(),
          name="delete_category"),
+    path("expenses/export_csv/", ExpenseExportCSV.as_view(), name="export_csv"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
