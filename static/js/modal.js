@@ -23,7 +23,6 @@ export function initializeTransactionForm() {
 
             const formData = new FormData(form);
             const csrfToken = getCookie("csrftoken");
-
             fetch(form.action, {
                 method: 'POST',
                 body: formData,
@@ -31,7 +30,12 @@ export function initializeTransactionForm() {
                     "X-CSRFToken": csrfToken,
                 }
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => Promise.reject(data));
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         form.reset();

@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import gettext_lazy as _
 
+from users.models import User
 from widgets.widgets import InputWidget
 
 
@@ -43,7 +44,7 @@ class LoginForm(AuthenticationForm):
     username = forms.EmailField(
         widget=InputWidget(
             attrs={"title": "Email", "placeholder": "Enter your email", "type":
-                "email", "autocomplete": "email", "name": "email",}
+                "email", "autocomplete": "email", "name": "email", }
         ),
     )
     password = forms.CharField(
@@ -58,3 +59,32 @@ class LoginForm(AuthenticationForm):
             }
         ),
     )
+
+
+class UpdateUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["last_name", "first_name", "email", ]
+        widgets = {
+            "email": InputWidget(
+                attrs={
+                    "title": "Email Address", "disabled": True,
+                }
+            ),
+            "last_name": InputWidget(
+                attrs={
+                    "title": "Last Name", "disabled": True,
+                }
+            ),
+            "first_name": InputWidget(
+                attrs={
+                    "title": "First Name", "disabled": True,
+                }
+            ),
+        }
+
+
+class PasswordChangeForm(forms.Form):
+    old_password = forms.CharField()
+    new_password = forms.CharField()
+    confirm_password = forms.CharField()

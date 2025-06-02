@@ -64,7 +64,7 @@ class ExpenseCreateView(LoginRequiredMixin, CreateView):
             return JsonResponse({
                 'success': True,
                 'message': 'Transaction created successfully!'
-            })
+            }, status=200)
 
         return response
 
@@ -73,7 +73,7 @@ class ExpenseCreateView(LoginRequiredMixin, CreateView):
             return JsonResponse({
                 'success': False,
                 'errors': form.errors
-            })
+            }, status=400)
 
         return super().form_invalid(form)
 
@@ -103,7 +103,7 @@ class ExpenseEditView(LoginRequiredMixin, UpdateView):
             return JsonResponse({
                 'success': True,
                 'message': 'Transaction created successfully!'
-            })
+            }, status=200)
 
         return response
 
@@ -112,7 +112,7 @@ class ExpenseEditView(LoginRequiredMixin, UpdateView):
             return JsonResponse({
                 'success': False,
                 'errors': form.errors
-            })
+            }, status=400)
 
         return super().form_invalid(form)
 

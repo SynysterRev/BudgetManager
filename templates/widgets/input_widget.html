@@ -9,9 +9,8 @@
            {% if widget.attrs.required %}required{% endif %}
            {% if widget.attrs.disabled %}disabled{% endif %}
            class="rounded-md border-1 border-gray-300 p-2 focus:outline-none
-           focus:ring-2
-           focus:ring-indigo-400
-           {{ widget.attrs.class|default:'' }}"
+           focus:ring-2 focus:ring-indigo-400
+           {{ widget.attrs.class|default:'' }} disabled:bg-gray-100"
            placeholder="{{ widget.attrs.placeholder }}"
     {% for name, value in widget.attrs.items %}
         {% if name not in 'class,title,placeholder,required,disabled' %}{{ name }}="

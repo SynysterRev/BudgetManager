@@ -95,7 +95,8 @@
                             </span>Categories</a>
                 </li>
                 <li>
-                    <a href="#" class="{% active_classes 'settings' %}">
+                    <a href="{% url 'settings' %}"
+                       class="{% active_classes 'settings' %}">
                             <span class="mr-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 24 24"
@@ -114,7 +115,7 @@
         <div class="w-full h-[2px] bg-gray-300/20"></div>
         <div class="flex items-center py-4 px-6">
             <div class="rounded-full bg-indigo-300 w-10 h-10 flex items-center
-            justify-center">{{ request.user.first_name|capfirst }}
+            justify-center">{{ request.user.first_name|first|capfirst }}
             </div>
             <div class="ml-3">
                 <div class="flex flex-col">

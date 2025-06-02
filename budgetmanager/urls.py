@@ -23,7 +23,7 @@ from expenses.views import DashboardView, ExpenseView, CategoryView, CategoryCre
     CategoryDeleteView, CategoryEditView, ExpenseCreateView, ExpenseEditView, \
     ExpenseDeleteView, ExpenseExportCSV
 from users.forms import LoginForm
-from users.views import SignupView
+from users.views import SignupView, SettingsView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -53,5 +53,6 @@ urlpatterns = [
     path("categories/<str:name>/delete/", CategoryDeleteView.as_view(),
          name="delete_category"),
     path("expenses/export_csv/", ExpenseExportCSV.as_view(), name="export_csv"),
+    path("settings/", SettingsView.as_view(), name="settings"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
