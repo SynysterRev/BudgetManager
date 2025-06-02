@@ -19,7 +19,7 @@
         {% url 'edit_expense' form.instance.id %}
     {% else %}
         {% url 'create_expense' %}
-    {% endif %}">
+    {% endif %}" novalidate>
         {% csrf_token %}
         <div class="grid grid-cols-2 gap-2">
             {% for field in form %}

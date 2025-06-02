@@ -1,5 +1,6 @@
 import csv
 import datetime
+from decimal import Decimal, ROUND_HALF_UP
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Case, When, F, DecimalField
@@ -31,18 +32,18 @@ class ExpenseView(LoginRequiredMixin, TransactionFilterMixin, ListView):
         categories = Category.objects.filter(user=self.request.user)
         context['categories'] = [category.name for category in categories]
 
-        balance = Transaction.objects.aggregate(
+        balance = Transaction.objects.filter(user=self.request.user).aggregate(
             balance=Sum(
                 Case(
                     When(transaction_type='expense', then=-F('amount')),
                     When(transaction_type='income', then=F('amount')),
                     default=0,
-                    output_field=DecimalField(),
+                    output_field=DecimalField(max_digits=10, decimal_places=2),
                 )
             )
-        )['balance'] or 0
+        )['balance'] or Decimal('0.00')
 
-        context['balance'] = balance
+        context['balance'] = balance.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
         return context
 

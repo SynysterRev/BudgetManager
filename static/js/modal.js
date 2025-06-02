@@ -31,9 +31,6 @@ export function initializeTransactionForm() {
                 }
             })
                 .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(data => Promise.reject(data));
-                    }
                     return response.json();
                 })
                 .then(data => {

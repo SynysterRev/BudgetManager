@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 
 from django import forms
 
@@ -9,6 +10,14 @@ from widgets.widgets import InputWidget, ColorPickerWidget, DropdownWidget, Radi
 
 
 class CreateTransactionForm(forms.ModelForm):
+    amount = forms.CharField(
+        widget=InputWidget(attrs={
+            "pattern": r"[0-9]+([.,][0-9]{1,2})?",
+            "placeholder": "0.00",
+            "title": "Amount",
+        })
+    )
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
 
@@ -34,15 +43,6 @@ class CreateTransactionForm(forms.ModelForm):
                     "type": "text",
                 }
             ),
-            "amount": InputWidget(
-                attrs={
-                    "title": "Amount",
-                    "placeholder": "0.00",
-                    "type": "number",
-                    "min": "0",
-                    "step": "0.01"
-                }
-            ),
             "transaction_type": RadioWidget(
                 choices=Transaction.TRANSACTION_TYPES,
                 attrs={
@@ -55,6 +55,17 @@ class CreateTransactionForm(forms.ModelForm):
                 }
             )
         }
+
+
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        if isinstance(amount, str):
+            amount_clean = amount.replace(',', '.').strip()
+            try:
+                return Decimal(amount_clean)
+            except:
+                raise forms.ValidationError("Invalid format")
+        return amount
 
 
 class CreateCategoryForm(forms.ModelForm):
