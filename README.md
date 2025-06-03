@@ -38,6 +38,7 @@
 - **Data Visualization (if achievable)**:
   - Line chart showing income and expenses over several months
   - Pie chart of income/expense distribution per category for the current month
+- **Responsive Design**: Improve layout and usability on mobile and tablet devices
 
 ---
 
@@ -46,6 +47,7 @@
 - Python
 - Django
 - HTML / CSS (Django templates)
+- Tailwind
 - JavaScript (optional for interactivity and future charts)
 - SQLite (for local development)
 - PostgreSQL (for production)
