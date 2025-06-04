@@ -1,4 +1,4 @@
-# Budget Manager – Django Project
+# Budget Manager – Django Project (still WIP)
 
 **Budget Manager** is a Django-based web application designed to help users manage their personal finances with ease. It allows users to securely create an account, track income and expenses, organize transactions by category, and export their financial data.
 
