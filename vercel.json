@@ -31,8 +31,5 @@
     "deploymentEnabled": {
       "main": true
     }
-  },
-  "github": {
-    "autoDeployOnPush": false
   }
 }
