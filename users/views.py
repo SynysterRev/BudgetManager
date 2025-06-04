@@ -35,7 +35,7 @@ class SettingsView(LoginRequiredMixin, View):
             if profile_form.is_valid():
                 user = profile_form.save()
                 return JsonResponse({"success": True,
-                                     "data": {"username": user.last_name,
+                                     "data": {"last_name": user.last_name,
                                               "email": user.email,
                                               "first_name": user.first_name}})
             else:

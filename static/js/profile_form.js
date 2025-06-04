@@ -17,10 +17,13 @@ function validateProfileForm(data) {
 
     enableInputs(false);
     clearErrors();
-
+    
     document.getElementById("id_last_name").value = data.data.last_name;
     document.getElementById("id_first_name").value = data.data.first_name;
     document.getElementById("id_email").value = data.data.email;
+    document.getElementById("full-name-nav").textContent = `${data.data.first_name} ${data.data.last_name}`;
+    document.getElementById("first-name-circle").textContent = data.data.first_name[0].toUpperCase();
+    document.getElementById("email-nav").textContent = data.data.email;
 
     divEditBtns.classList.add("hidden");
     editBtn.classList.remove("hidden");
