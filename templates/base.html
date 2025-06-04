@@ -4,9 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Budget Manager</title>
+    <meta name="description"
+          content="Manage your personal budget and expenses efficiently">
+    <meta name="author" content="Michaël Arnaud">
+
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+
+    <title>{% block title %}Budget Manager{% endblock %}</title>
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles/output.css' %}" type="text/css">
+
+    <meta property="og:title"
+          content="{% block og_title %}Budget Manager{% endblock %}">
+    <meta property="og:description"
+          content="{% block og_description %}Manage your personal budget and expenses{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title"
+          content="{% block twitter_title %}Budget Manager{% endblock %}">
+    <meta name="twitter:description"
+          content="{% block twitter_description %}Manage your personal budget and expenses{% endblock %}">
+
     {% block head_scripts %}{% endblock %}
 </head>
 

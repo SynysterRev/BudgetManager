@@ -19,7 +19,7 @@ class SignupView(SuccessMessageMixin, CreateView):
 
 class SettingsView(LoginRequiredMixin, View):
     model = User
-    template_name = "users/update_user.html"
+    template_name = "users/settings.html"
 
     def get_context_data(self, **kwargs):
         kwargs['profile_form'] = UpdateUserForm(instance=self.request.user)

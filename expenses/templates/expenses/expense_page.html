@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load balance_filters %}
 
+{% block title %}
+    Expenses - BudgetManager
+{% endblock %}
+
 {% block head_scripts %}
     {% load static %}
     <script type="module" src="{% static 'js/transaction_form.js' %}" defer></script>
