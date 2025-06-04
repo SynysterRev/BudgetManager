@@ -29,7 +29,7 @@
   ],
   "git": {
     "deploymentEnabled": {
-      "master": true
+      "main": true
     }
   },
   "github": {
