@@ -4,7 +4,10 @@
     {
       "src": "budgetmanager/wsgi.py",
       "use": "@vercel/python",
-      "config": {"maxLambdaSize": "15mb", "runtime": "python3.13"}
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.13"
+      }
     },
     {
       "src": "build_files.sh",
@@ -23,5 +26,13 @@
       "src": "/static/(.*)",
       "dest": "/static/$1"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "master": true
+    }
+  },
+  "github": {
+    "autoDeployOnPush": false
+  }
 }
