@@ -81,6 +81,11 @@ WSGI_APPLICATION = "budgetmanager.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+if os.getenv('VERCEL_ENV') == 'preview':
+    DATABASE_URL = os.getenv('DATABASE_URL_PREVIEW')
+else:
+    DATABASE_URL = os.getenv('DATABASE_URL')
+
 if DEBUG:
     DATABASES = {
         "default": {
@@ -91,7 +96,7 @@ if DEBUG:
 else:
     DATABASES = {
         'default': dj_database_url.parse(
-            os.environ.get("DATABASE_URL"),
+            os.environ.get(DATABASE_URL),
             conn_max_age=600,
             conn_health_checks=True,
         )
