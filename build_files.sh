@@ -1,7 +1,6 @@
 #!/bin/bash
 npm install
 
-# Générer le CSS Tailwind
 npm run build-css
 
 python3 -m pip install -r requirements.txt
