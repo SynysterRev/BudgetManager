@@ -1,4 +1,4 @@
-import {initializeModalClose, initializeTransactionForm} from "./modal.js";
+import {initializeModalClose, initializeTransactionForm} from "./creation-modal.js";
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
