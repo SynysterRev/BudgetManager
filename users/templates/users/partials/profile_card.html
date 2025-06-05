@@ -1,0 +1,72 @@
+<div class="flex flex-col flex-2">
+    <div class="bg-background-important shadow-lg rounded-lg">
+        <h2 class="font-bold text-text-main text-lg p-4">Profile settings</h2>
+        <div class="border-t border-gray-200">
+            <div id="success-message" class="p-2 mx-6 mt-4 text-emerald-900 border-1
+                border-success bg-emerald-300
+                rounded-md hidden">
+            </div>
+            <form id="profile-form" class="p-6" method="POST" novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="profile" value="1">
+                <div class="flex flex-col gap-2">
+                    {% for field in profile_form %}
+                        {{ field.as_widget }}
+                    {% endfor %}
+                    <button id="edit-profile" type="button" class="px-4 py-2
+                        bg-white border border-gray-300 text-indigo-600 rounded-md
+                        hover:bg-background-indigo transition-colors duration-300
+                        cursor-pointer place-self-end">Edit Profile
+                    </button>
+                    <div id="edit-form-btns" class="hidden flex justify-end gap-2">
+                        <button id="edit-cancel" type="button" class="px-4 py-2
+                                bg-white border border-gray-300 text-text-main
+                                rounded-md hover:bg-gray-50 transition-colors
+                                duration-300 cursor-pointer focus:outline-none
+                                focus:ring-2 focus:ring-violet-700">Cancel
+                        </button>
+                        <button id="submit-profile" type="submit"
+                                class="rounded-md bg-primary-indigo py-2 cursor-pointer
+                    text-white hover:bg-violet-700 px-4 transition-colors
+                    duration-300 focus:outline-none focus:ring-2 focus:ring-violet-700">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="border-t border-gray-200 py-6 mx-6 flex flex-col items-start
+            gap-4">
+            <h3 class="text-text-main font-semibold">Change Password</h3>
+            <button id="change-password-btn" type="button" class="px-4 py-2
+                bg-white border
+            border-gray-300 text-indigo-600 rounded-md hover:bg-background-indigo
+            transition-colors duration-300 cursor-pointer">Change
+                Password
+            </button>
+        </div>
+        <form id="password-form" class="hidden px-6 pb-4" method="POST" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="password" value="1">
+            <div class="flex flex-col gap-2">
+                {% for field in password_form %}
+                    {{ field.as_widget }}
+                {% endfor %}
+                <div id="password-form-btns" class="flex justify-end gap-2">
+                    <button id="password-cancel" type="button" class="px-4 py-2
+                                bg-white border border-gray-300 text-text-main
+                                rounded-md hover:bg-gray-50 transition-colors
+                                duration-300 cursor-pointer focus:outline-none
+                                focus:ring-2 focus:ring-violet-700">Cancel
+                    </button>
+                    <button id="submit-profile" type="submit"
+                            class="rounded-md bg-primary-indigo py-2 cursor-pointer
+                    text-white hover:bg-violet-700 px-4 transition-colors
+                    duration-300 focus:outline-none focus:ring-2 focus:ring-violet-700">
+                        Update Password
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

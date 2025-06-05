@@ -1,12 +1,14 @@
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import DeleteView
 from django.views.generic.edit import CreateView
 
+from expenses.models import Transaction, Category
 from users.forms import SignupForm, UpdateUserForm, PasswordChangeForm
 from users.models import User
 
@@ -24,12 +26,20 @@ class SettingsView(LoginRequiredMixin, View):
     success_message = "Password changed successfully"
 
     def get_context_data(self, **kwargs):
-        kwargs['profile_form'] = UpdateUserForm(instance=self.request.user)
-        kwargs['password_form'] = PasswordChangeForm()
-        return kwargs
+        context = kwargs or {}
+        context.update({
+            'profile_form': UpdateUserForm(instance=self.request.user),
+            'password_form': PasswordChangeForm(user=self.request.user),
+            'total_transactions': Transaction.objects.filter(
+                user=self.request.user).count(),
+            'total_categories': Category.objects.filter(user=self.request.user).count(),
+            'creation_date': self.request.user.date_joined.strftime("%d/%m/%Y"),
+        })
+        return context
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, self.get_context_data())
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
@@ -49,13 +59,11 @@ class SettingsView(LoginRequiredMixin, View):
                     status=400)
 
         if 'password' in request.POST:
-            password_form = PasswordChangeForm(request.POST, user=user)
+            password_form = PasswordChangeForm(data=request.POST, user=user)
             if password_form.is_valid():
                 new_password = password_form.cleaned_data.get("new_password")
                 user.set_password(new_password)
                 user.save()
-                # Updating the password logs out all other sessions for the user
-                # except the current one.
                 update_session_auth_hash(self.request, self.request.user)
                 return JsonResponse({
                     "success": True,
@@ -74,3 +82,15 @@ class SettingsView(LoginRequiredMixin, View):
 
     def get_object(self, queryset=...):
         return self.request.user
+
+
+class DeleteUserView(LoginRequiredMixin, DeleteView):
+    model = User
+    success_url = reverse_lazy('login')
+
+    def get_object(self, queryset=...):
+        return self.request.user
+
+    def delete(self, request, *args, **kwargs):
+        logout(request)
+        return super().delete(request, *args, **kwargs)
