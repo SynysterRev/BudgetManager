@@ -20,14 +20,14 @@
   - Total number of matching transactions
   - Displayed balance (total of filtered transactions)
 - **User Profile Editing**: Update name and email.
+- **Password Change**: Update password.
+- **Account Deletion**: Allow users to delete their account and all their data.
 - **CSV Export**: Export displayed transactions as a CSV file.
 
 ---
 
 ## Upcoming Features
 
-- **Password Change**
-- **Account Deletion**
 - **Dashboard Statistics**:
   - Total number of transactions
   - Number of categories
