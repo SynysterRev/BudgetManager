@@ -63,7 +63,6 @@ class SettingsView(LoginRequiredMixin, View):
                 }, status=200
                 )
             else:
-                print(password_form.errors)
                 return JsonResponse({
                     "success": False,
                     "errors": password_form.errors},
