@@ -1,4 +1,4 @@
-import {initializeColorPicker} from "./color_picker.js";
+import {initializeColorPicker} from "./color-picker.js";
 import {initializeModalClose} from "./modal.js";
 
 document.addEventListener("DOMContentLoaded", (event) => {

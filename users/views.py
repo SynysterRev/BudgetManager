@@ -1,3 +1,4 @@
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
@@ -20,6 +21,7 @@ class SignupView(SuccessMessageMixin, CreateView):
 class SettingsView(LoginRequiredMixin, View):
     model = User
     template_name = "users/settings.html"
+    success_message = "Password changed successfully"
 
     def get_context_data(self, **kwargs):
         kwargs['profile_form'] = UpdateUserForm(instance=self.request.user)
@@ -30,19 +32,44 @@ class SettingsView(LoginRequiredMixin, View):
         return render(request, self.template_name, self.get_context_data())
 
     def post(self, request, *args, **kwargs):
+        user = self.request.user
         if 'profile' in request.POST:
-            profile_form = UpdateUserForm(request.POST, instance=self.request.user)
+            profile_form = UpdateUserForm(request.POST, instance=user)
             if profile_form.is_valid():
                 user = profile_form.save()
                 return JsonResponse({"success": True,
-                                     "data": {"last_name": user.last_name,
+                                     "data": {"lastName": user.last_name,
                                               "email": user.email,
-                                              "first_name": user.first_name}})
+                                              "firstName": user.first_name}},
+                                    status=200)
             else:
                 return JsonResponse({
                     "success": False,
                     "errors": profile_form.errors},
                     status=400)
+
+        if 'password' in request.POST:
+            password_form = PasswordChangeForm(request.POST, user=user)
+            if password_form.is_valid():
+                new_password = password_form.cleaned_data.get("new_password")
+                user.set_password(new_password)
+                user.save()
+                # Updating the password logs out all other sessions for the user
+                # except the current one.
+                update_session_auth_hash(self.request, self.request.user)
+                return JsonResponse({
+                    "success": True,
+                    "successMessage": self.success_message
+                }, status=200
+                )
+            else:
+                print(password_form.errors)
+                return JsonResponse({
+                    "success": False,
+                    "errors": password_form.errors},
+                    status=400
+                )
+
         context = self.get_context_data()
         return render(request, self.template_name, context)
 

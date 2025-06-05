@@ -18,11 +18,11 @@ function validateProfileForm(data) {
     enableInputs(false);
     clearErrors();
     
-    document.getElementById("id_last_name").value = data.data.last_name;
-    document.getElementById("id_first_name").value = data.data.first_name;
+    document.getElementById("id_last_name").value = data.data.lastName;
+    document.getElementById("id_first_name").value = data.data.firstName;
     document.getElementById("id_email").value = data.data.email;
-    document.getElementById("full-name-nav").textContent = `${data.data.first_name} ${data.data.last_name}`;
-    document.getElementById("first-name-circle").textContent = data.data.first_name[0].toUpperCase();
+    document.getElementById("full-name-nav").textContent = `${data.data.firstName} ${data.data.lastName}`;
+    document.getElementById("first-name-circle").textContent = data.data.firstName[0].toUpperCase();
     document.getElementById("email-nav").textContent = data.data.email;
 
     divEditBtns.classList.add("hidden");
@@ -73,12 +73,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 "X-CSRFToken": csrfToken,
             }
         })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => Promise.reject(data));
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     validateProfileForm(data);

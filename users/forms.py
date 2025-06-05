@@ -85,6 +85,56 @@ class UpdateUserForm(forms.ModelForm):
 
 
 class PasswordChangeForm(forms.Form):
-    old_password = forms.CharField()
-    new_password = forms.CharField()
-    confirm_password = forms.CharField()
+    def __init__(self, *args, user=None, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    old_password = forms.CharField(
+        label=_("current_password"),
+        strip=False,
+        widget=InputWidget(
+            attrs={
+                "title": "Current Password",
+                "placeholder": "Enter your current password",
+                "type": "password",
+                "autocomplete": "current-password",
+            }
+        )
+    )
+    new_password = forms.CharField(
+        label=_("new_password"),
+        strip=False,
+        widget=InputWidget(
+            attrs={
+                "title": "New Password",
+                "placeholder": "Enter your new password",
+                "type": "password",
+            }
+        ),
+    )
+    confirm_password = forms.CharField(
+        label=_("confirm_password"),
+        strip=False,
+        widget=InputWidget(
+            attrs={
+                "title": "Confirm Password",
+                "placeholder": "Confirm your password",
+                "type": "password",
+            }
+        ),
+    )
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get("old_password")
+        if old_password and not self.user.check_password(old_password):
+            raise forms.ValidationError("Your current password is incorrect")
+        return old_password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get("new_password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if new_password and confirm_password and new_password != confirm_password:
+            self.add_error("confirm_password",
+                           "Please make sure both password fields match.")
