@@ -1,5 +1,5 @@
 import {initializeColorPicker} from "./color-picker.js";
-import {initializeModalClose} from "./modal.js";
+import {initializeModalClose} from "./creation-modal.js";
 
 document.addEventListener("DOMContentLoaded", (event) => {
     const addBtn = document.querySelector("#add-category-btn");
