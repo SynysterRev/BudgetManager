@@ -95,11 +95,10 @@ if DEBUG:
     }
 else:
     DATABASES = {
-        'default': dj_database_url.parse(
-            os.environ.get(DATABASE_URL),
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+        'default': dj_database_url.parse(DATABASE_URL,
+                                         conn_max_age=600,
+                                         conn_health_checks=True,
+                                         )
     }
 
 # Password validation
