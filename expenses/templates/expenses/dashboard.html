@@ -5,8 +5,65 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="font-bold text-text-main text-2xl">Dashboard</h1>
-    <div class="flex items-center justify-center text-alert h-full">
-        <p class="text-3xl font-bold">WORK IN PROGRESS</p>
+    <h1 class="font-bold text-text-main text-2xl">Dashboard</h1>
+    <div class="grid grid-cols-3 gap-6">
+        <div class="bg-background-important w-full flex flex-col mt-8 p-4
+    rounded-lg shadow-md bg-linear-to-br from-primary-indigo/10 to-white
+    hover:shadow-lg">
+            <div class="flex justify-between mb-4 items-center">
+                <h2 class="font-medium text-text-main text-md">Monthly Balance</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="text-primary-indigo">
+                    <line x1="12" x2="12" y1="2" y2="22"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <p class="font-bold text-2xl">${{ monthly_balance }}</p>
+            <div class="text-sm text-text-secondary mt-2 flex">
+                <span class="mr-1 {{ diff_balance_class }}">{{ diff_balance_icon }}
+                    {{ percent_previous_balance }}% </span>
+                <span>vs last month</span>
+            </div>
+        </div>
+        <div class="bg-background-important w-full flex flex-col mt-8 p-4
+    rounded-lg shadow-md bg-linear-to-br from-green-100/60 to-white hover:shadow-lg">
+            <div class="flex justify-between mb-4 items-center">
+                <h2 class="font-medium text-text-main text-md">Monthly Income</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="text-primary-indigo">
+                    <path d="M7 7h10v10"></path>
+                    <path d="M7 17 17 7"></path>
+                </svg>
+            </div>
+            <p class="font-bold text-2xl">${{ monthly_income }}</p>
+            <div class="text-sm text-text-secondary mt-2 flex">
+                <span class="mr-1 {{ diff_income_class }}">{{ diff_income_icon }}
+                    {{ percent_previous_income }}% </span>
+                <span>vs last month</span>
+            </div>
+        </div>
+        <div class="bg-background-important w-full flex flex-col mt-8 p-4
+    rounded-lg shadow-md bg-linear-to-br from-alert/10 to-white hover:shadow-lg">
+            <div class="flex justify-between mb-4 items-center">
+                <h2 class="font-medium text-text-main text-md">Monthly Expenses</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="text-primary-indigo">
+                    <path d="m7 7 10 10"></path>
+                    <path d="M17 7v10H7"></path>
+                </svg>
+            </div>
+            <p class="font-bold text-2xl">${{ monthly_expense }}</p>
+            <div class="text-sm text-text-secondary mt-2 flex">
+                <span class="mr-1 {{ diff_expense_class }}">{{ diff_income_icon }} {{ percent_previous_income }}% </span>
+                <span>vs last month</span>
+            </div>
+        </div>
     </div>
+    {% include 'expenses/partials/transaction_list.html' with title='Recent Transactions' transactions=transactions %}
 {% endblock content %}

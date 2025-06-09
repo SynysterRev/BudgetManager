@@ -1,13 +1,15 @@
 import csv
 import datetime
+from collections import defaultdict
 from decimal import Decimal, ROUND_HALF_UP
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Case, When, F, DecimalField
 from django.http import JsonResponse, HttpResponse
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, ListView, CreateView, DeleteView, \
+from django.views.generic import ListView, CreateView, DeleteView, \
     UpdateView
 
 from expenses.forms import CreateCategoryForm, CreateTransactionForm
@@ -15,8 +17,82 @@ from expenses.mixins import TransactionFilterMixin
 from expenses.models import Transaction, Category
 
 
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, ListView):
     template_name = "expenses/dashboard.html"
+    model = Transaction
+    context_object_name = "transactions"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_date = datetime.datetime.today()
+
+        transactions = Transaction.objects.filter(user=self.request.user,
+                                                  datetime__year=current_date.year)
+
+        monthly_data = defaultdict(lambda: {'income': 0, 'expense': 0})
+        for t in transactions:
+            month = t.datetime.month
+            if t.transaction_type == 'income':
+                monthly_data[month]['income'] += t.amount
+            else:
+                monthly_data[month]['expense'] += t.amount
+
+        context['monthly_income'] = monthly_data[current_date.month]['income']
+        context['monthly_expense'] = monthly_data[current_date.month]['expense']
+        context['monthly_balance'] = (monthly_data[current_date.month]['income'] -
+                                      monthly_data[current_date.month]['expense'])
+
+        last_month_date = current_date - relativedelta(months=1)
+        previous_month_transactions = list(Transaction.objects.filter(
+            user=self.request.user,
+            datetime__year=last_month_date.year,
+            datetime__month=last_month_date.month))
+        previous_month_income = sum(t.amount for t in previous_month_transactions if
+                                    t.transaction_type == 'income')
+        previous_month_expense = sum(t.amount for t in previous_month_transactions if
+                                     t.transaction_type == 'expense')
+
+        previous_balance = previous_month_income - previous_month_expense
+
+        context['percent_previous_balance'] = ((context['monthly_balance'] -
+                                                previous_balance) / previous_balance) * 100 if (
+                previous_balance
+                != 0) else 100
+
+        context['percent_previous_income'] = ((context['monthly_income'] -
+                                               previous_month_income) / previous_month_income) * 100 if (
+                previous_balance
+                != 0) else 100
+
+        context['percent_previous_expense'] = ((context['monthly_expense'] -
+                                                previous_month_expense) / previous_month_expense) * 100 if (
+                previous_balance
+                != 0) else 100
+        if context['percent_previous_balance'] > 0 :
+            context['diff_balance_class'] = 'text-success'
+            context['diff_balance_icon'] = '↑'
+        else:
+            context['diff_balance_class'] = 'text-alert'
+            context['diff_balance_icon'] = '↓'
+
+        if context['percent_previous_income'] > 0:
+            context['diff_income_class'] = 'text-success'
+            context['diff_income_icon'] = '↑'
+        else:
+            context['diff_income_class'] = 'text-alert'
+            context['diff_income_icon'] = '↓'
+
+        if context['percent_previous_expense'] < 0:
+            context['diff_expense_class'] = 'text-success'
+            context['diff_expense_icon'] = '↓'
+        else:
+            context['diff_expense_class'] = 'text-alert'
+            context['diff_expense_icon'] = '↑'
+
+        return context
+
+    def get_queryset(self):
+        return Transaction.objects.order_by("datetime")[:5]
 
 
 class ExpenseView(LoginRequiredMixin, TransactionFilterMixin, ListView):
