@@ -23,21 +23,21 @@
 - **Password Change**: Update password.
 - **Account Deletion**: Allow users to delete their account and all their data.
 - **CSV Export**: Export displayed transactions as a CSV file.
+- **Dashboard Overview**:
+  - Most recent transactions
+  - Current month balance, income, and expenses
+- **Data Visualization**:
+  - Line chart showing income and expenses over several months
+  - Pie chart of expenses distribution per category for the current month
+- **Dashboard Statistics**:
+  - Total number of transactions
+  - Number of categories
+  - Account creation date
 
 ---
 
 ## Upcoming Features
 
-- **Dashboard Statistics**:
-  - Total number of transactions
-  - Number of categories
-  - Account creation date
-- **Dashboard Overview**:
-  - Most recent transactions
-  - Current month balance, income, and expenses
-- **Data Visualization (if achievable)**:
-  - Line chart showing income and expenses over several months
-  - Pie chart of income/expense distribution per category for the current month
 - **Responsive Design**: Improve layout and usability on mobile and tablet devices
 
 ---
