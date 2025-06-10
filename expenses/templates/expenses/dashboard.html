@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load balance_filters %}
 
 {% block title %}
     Dashboard - BudgetManager
@@ -23,7 +24,7 @@
             <p class="font-bold text-2xl">${{ monthly_balance }}</p>
             <div class="text-sm text-text-secondary mt-2 flex">
                 <span class="mr-1 {{ diff_balance_class }}">{{ diff_balance_icon }}
-                    {{ percent_previous_balance }}% </span>
+                    {{ percent_previous_balance|get_abs }}% </span>
                 <span>vs last month</span>
             </div>
         </div>
@@ -42,7 +43,7 @@
             <p class="font-bold text-2xl">${{ monthly_income }}</p>
             <div class="text-sm text-text-secondary mt-2 flex">
                 <span class="mr-1 {{ diff_income_class }}">{{ diff_income_icon }}
-                    {{ percent_previous_income }}% </span>
+                    {{ percent_previous_income|get_abs }}% </span>
                 <span>vs last month</span>
             </div>
         </div>
@@ -60,7 +61,9 @@
             </div>
             <p class="font-bold text-2xl">${{ monthly_expense }}</p>
             <div class="text-sm text-text-secondary mt-2 flex">
-                <span class="mr-1 {{ diff_expense_class }}">{{ diff_income_icon }} {{ percent_previous_income }}% </span>
+                <span class="mr-1 {{ diff_expense_class }}">
+                    {{ diff_expense_icon }} {{ percent_previous_expense|get_abs }}%
+                </span>
                 <span>vs last month</span>
             </div>
         </div>

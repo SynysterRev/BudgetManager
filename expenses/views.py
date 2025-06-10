@@ -54,21 +54,21 @@ class DashboardView(LoginRequiredMixin, ListView):
 
         previous_balance = previous_month_income - previous_month_expense
 
-        context['percent_previous_balance'] = ((context['monthly_balance'] -
-                                                previous_balance) / previous_balance) * 100 if (
-                previous_balance
-                != 0) else 100
+        context['percent_previous_balance'] = round(((context['monthly_balance'] -
+                                                      previous_balance) / previous_balance)
+                                                    * 100) if (
+                previous_balance != 0) else 100
 
-        context['percent_previous_income'] = ((context['monthly_income'] -
-                                               previous_month_income) / previous_month_income) * 100 if (
-                previous_balance
-                != 0) else 100
+        context['percent_previous_income'] = round(((context['monthly_income'] -
+                                                     previous_month_income) /
+                                                    previous_month_income) * 100) if (
+                previous_month_income != 0) else 100
 
-        context['percent_previous_expense'] = ((context['monthly_expense'] -
-                                                previous_month_expense) / previous_month_expense) * 100 if (
-                previous_balance
-                != 0) else 100
-        if context['percent_previous_balance'] > 0 :
+        context['percent_previous_expense'] = round(((context['monthly_expense'] -
+                                                      previous_month_expense) /
+                                                     previous_month_expense) * 100) if (
+                previous_month_expense != 0) else 100
+        if context['percent_previous_balance'] > 0:
             context['diff_balance_class'] = 'text-success'
             context['diff_balance_icon'] = '↑'
         else:
