@@ -1,3 +1,4 @@
+import calendar
 import csv
 import datetime
 from collections import defaultdict
@@ -68,6 +69,7 @@ class DashboardView(LoginRequiredMixin, ListView):
                                                       previous_month_expense) /
                                                      previous_month_expense) * 100) if (
                 previous_month_expense != 0) else 100
+
         if context['percent_previous_balance'] > 0:
             context['diff_balance_class'] = 'text-success'
             context['diff_balance_icon'] = '↑'
@@ -88,6 +90,18 @@ class DashboardView(LoginRequiredMixin, ListView):
         else:
             context['diff_expense_class'] = 'text-alert'
             context['diff_expense_icon'] = '↑'
+
+        labels = []
+        incomes = []
+        expenses = []
+        for month in range(1, current_date.month + 1):
+            labels.append(calendar.month_abbr[month])
+            incomes.append(monthly_data[month]['income'])
+            expenses.append(monthly_data[month]['expense'])
+
+        context['labels'] = labels
+        context['incomes'] = incomes
+        context['expenses'] = expenses
 
         return context
 
