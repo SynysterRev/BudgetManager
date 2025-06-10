@@ -9,7 +9,7 @@
     <div class="flex flex-col md:flex-row justify-between">
         <h1 class="font-bold text-text-main text-2xl mb-4">Transactions</h1>
         <button id="add-transaction-btn" class="flex items-center justify-center
-        bg-indigo-500 rounded-md
+        bg-indigo-500 rounded-md py-2
             px-6 text-white cursor-pointer shadow-sm duration-300 transition-colors
             hover:bg-violet-700 font-bold">
             <span class="mr-2">
@@ -25,7 +25,7 @@
     </div>
     <form method="GET" class="bg-background-important w-full flex flex-col p-4 mt-8
     rounded-lg shadow-md">
-        <div class="flex flex-row gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row gap-4">
             <div class="flex flex-1 gap-4">
                 <div class="flex flex-col gap-2 flex-1">
                     <label for="start_date">Start Date</label>
@@ -106,7 +106,7 @@
         </div>
 
         <div class="w-full h-[1px] bg-gray-300/30 mt-4 rounded-lg"></div>
-        <div class="flex flex-row justify-between mt-4">
+        <div class="flex flex-col md:flex-row justify-between mt-4">
             <div class="text-primary-indigo flex items-center space-x-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -134,7 +134,7 @@
             </div>
             <a class="flex items-center justify-center px-3 py-1.5 bg-white border
             border-gray-300 text-text-main rounded-md hover:bg-gray-50
-            transition-colors duration-300 cursor-pointer"
+            transition-colors duration-300 cursor-pointer mt-4 md:mt-0"
                href="{% url 'export_csv' %}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor"

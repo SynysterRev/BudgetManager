@@ -17,7 +17,7 @@ function validateProfileForm(data) {
 
     enableInputs(false);
     clearErrors();
-    
+
     document.getElementById("id_last_name").value = data.data.lastName;
     document.getElementById("id_first_name").value = data.data.firstName;
     document.getElementById("id_email").value = data.data.email;
@@ -77,6 +77,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .then(data => {
                 if (data.success) {
                     validateProfileForm(data);
+                    const message = document.getElementById("success-message");
+                    message.addEventListener("animationend", () => {
+                        message.style.display = "none";
+                    });
+                    message.classList.add("animate-fade-out");
+                    message.classList.remove("hidden");
+                    message.innerText = data.successMessage;
                 } else {
                     for (const fieldName in data.errors) {
                         const errorDiv = document.getElementById(`error-${fieldName}`);

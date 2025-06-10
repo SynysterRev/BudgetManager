@@ -23,7 +23,8 @@ class SignupView(SuccessMessageMixin, CreateView):
 class SettingsView(LoginRequiredMixin, View):
     model = User
     template_name = "users/settings.html"
-    success_message = "Password changed successfully"
+    password_success_message = "Password changed successfully"
+    profile_success_message = "Profile updated successfully"
 
     def get_context_data(self, **kwargs):
         context = kwargs or {}
@@ -50,7 +51,8 @@ class SettingsView(LoginRequiredMixin, View):
                 return JsonResponse({"success": True,
                                      "data": {"lastName": user.last_name,
                                               "email": user.email,
-                                              "firstName": user.first_name}},
+                                              "firstName": user.first_name},
+                                     "successMessage": self.profile_success_message},
                                     status=200)
             else:
                 return JsonResponse({
@@ -67,7 +69,7 @@ class SettingsView(LoginRequiredMixin, View):
                 update_session_auth_hash(self.request, self.request.user)
                 return JsonResponse({
                     "success": True,
-                    "successMessage": self.success_message
+                    "successMessage": self.password_success_message
                 }, status=200
                 )
             else:

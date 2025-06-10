@@ -13,8 +13,8 @@
 
 {% block content %}
     <h1 class="font-bold text-text-main text-2xl">Dashboard</h1>
-    <div class="grid grid-cols-3 gap-6">
-        <div class="bg-background-important w-full flex flex-col mt-8 p-4
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <div class="bg-background-important w-full flex flex-col p-4
     rounded-lg shadow-md bg-linear-to-br from-primary-indigo/10 to-white
     hover:shadow-lg">
             <div class="flex justify-between mb-4 items-center">
@@ -34,7 +34,7 @@
                 <span>vs last month</span>
             </div>
         </div>
-        <div class="bg-background-important w-full flex flex-col mt-8 p-4
+        <div class="bg-background-important w-full flex flex-col p-4
     rounded-lg shadow-md bg-linear-to-br from-success/30 to-white hover:shadow-lg">
             <div class="flex justify-between mb-4 items-center">
                 <h2 class="font-medium text-text-main text-md">Monthly Income</h2>
@@ -53,7 +53,7 @@
                 <span>vs last month</span>
             </div>
         </div>
-        <div class="bg-background-important w-full flex flex-col mt-8 p-4
+        <div class="bg-background-important w-full flex flex-col p-4
     rounded-lg shadow-md bg-linear-to-br from-alert/10 to-white hover:shadow-lg">
             <div class="flex justify-between mb-4 items-center">
                 <h2 class="font-medium text-text-main text-md">Monthly Expenses</h2>
@@ -74,24 +74,21 @@
             </div>
         </div>
     </div>
-    <div class="flex gap-6">
-        <div class="bg-background-important w-full flex flex-col mt-8 p-4
-    rounded-lg shadow-md">
-            <h2 class="text-text-main text-xl font-bold mb-6">Expense Distribution</h2>
-            <div class="h-80">
-                <canvas id="pie-chart"></canvas>
-            </div>
-            <div id="pie-legend" class="flex flex-wrap justify-center gap-4 mt-8">
-            </div>
+<div class="flex flex-col lg:flex-row gap-6">
+    <div class="bg-background-important w-full flex flex-col mt-8 p-4 rounded-lg shadow-md">
+        <h2 class="text-text-main text-xl font-bold mb-6">Expense Distribution</h2>
+        <div class="flex-1 min-h-0 relative">
+            <canvas id="pie-chart" class="max-w-full max-h-full"></canvas>
         </div>
-        <div class="bg-background-important w-full flex flex-col mt-8 p-4
-    rounded-lg shadow-md">
-            <h2 class="text-text-main text-xl font-bold mb-6">Monthly Trends</h2>
-            <div class="h-80">
-                <canvas id="line-chart"></canvas>
-            </div>
+        <div id="pie-legend" class="flex flex-wrap justify-center gap-4 mt-8"></div>
+    </div>
+    <div class="bg-background-important w-full flex flex-col mt-8 p-4 rounded-lg shadow-md">
+        <h2 class="text-text-main text-xl font-bold mb-6">Monthly Trends</h2>
+        <div class="flex-1 min-h-0 relative">
+            <canvas id="line-chart" class="max-w-full max-h-full"></canvas>
         </div>
     </div>
+</div>
     {{ labels|json_script:"labels-data" }}
     {{ incomes|json_script:"incomes-data" }}
     {{ expenses|json_script:"expenses-data" }}
