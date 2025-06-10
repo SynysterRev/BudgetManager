@@ -107,7 +107,7 @@ class DashboardView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return Transaction.objects.order_by("datetime")[:5]
+        return Transaction.objects.order_by('-datetime')[:5]
 
     def calculate_percentage_change(self, current, previous):
         if previous == 0:

@@ -35,3 +35,7 @@
     margin-left: 12px;
     cursor: pointer;
 }
+
+.chart-container {
+  min-height: 400px;
+}

@@ -43,7 +43,7 @@ new Chart(ctx, {
         },
         plugins: {
             legend: {
-                display: false
+                display: true
             },
             tooltip: {
                 backgroundColor: 'white',
