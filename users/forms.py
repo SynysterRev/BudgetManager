@@ -21,7 +21,6 @@ class SignupForm(UserCreationForm):
             ),
         }
 
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["password1"].widget = InputWidget(
@@ -43,8 +42,11 @@ class SignupForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     username = forms.EmailField(
         widget=InputWidget(
-            attrs={"title": "Email", "placeholder": "Enter your email", "type":
-                "email", "autocomplete": "email", "name": "email", }
+            attrs={"title": "Email",
+                   "placeholder": "Enter your email",
+                   "type": "email",
+                   "autocomplete": "email",
+                   "name": "email", }
         ),
     )
     password = forms.CharField(

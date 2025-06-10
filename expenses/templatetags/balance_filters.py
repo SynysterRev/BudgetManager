@@ -11,6 +11,7 @@ def get_color(amount):
     except (ValueError, TypeError):
         return ""
 
+
 @register.filter(name='get_abs')
 def get_abs(amount):
     return abs(amount)

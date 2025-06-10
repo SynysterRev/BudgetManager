@@ -42,8 +42,9 @@ class DashboardView(LoginRequiredMixin, ListView):
                 if t.category in categories_expenses:
                     categories_expenses[t.category]['amount'] += t.amount
                 else:
-                    categories_expenses[t.category] = {'amount': t.amount, 'name':
-                        t.category.name, 'color': t.category.color}
+                    categories_expenses[t.category] = {'amount': t.amount,
+                                                       'name': t.category.name,
+                                                       'color': t.category.color}
 
         context['monthly_income'] = monthly_data[current_date.month]['income']
         context['monthly_expense'] = monthly_data[current_date.month]['expense']

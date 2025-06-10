@@ -1,5 +1,5 @@
 from datetime import date
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 
 from django import forms
 
@@ -31,7 +31,6 @@ class CreateTransactionForm(forms.ModelForm):
         )
         self.fields["datetime"].initial = date.today()
 
-
     class Meta:
         model = Transaction
         fields = ["description", "amount", "category", "datetime", "transaction_type"]
@@ -56,14 +55,13 @@ class CreateTransactionForm(forms.ModelForm):
             )
         }
 
-
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')
         if isinstance(amount, str):
             amount_clean = amount.replace(',', '.').strip()
             try:
                 return Decimal(amount_clean)
-            except:
+            except InvalidOperation:
                 raise forms.ValidationError("Invalid format")
         return amount
 
