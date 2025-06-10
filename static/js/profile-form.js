@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     validateProfileForm(data);
                     const message = document.getElementById("success-message");
                     message.addEventListener("animationend", () => {
-                        message.style.display = "none";
+                        message.classList.add("hidden");
                     });
                     message.classList.add("animate-fade-out");
                     message.classList.remove("hidden");
