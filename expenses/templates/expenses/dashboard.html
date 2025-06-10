@@ -77,8 +77,11 @@
     <div class="flex gap-6">
         <div class="bg-background-important w-full flex flex-col mt-8 p-4
     rounded-lg shadow-md">
+            <h2 class="text-text-main text-xl font-bold mb-6">Expense Distribution</h2>
             <div class="h-80">
                 <canvas id="pie-chart"></canvas>
+            </div>
+            <div id="pie-legend" class="flex flex-wrap justify-center gap-4 mt-8">
             </div>
         </div>
         <div class="bg-background-important w-full flex flex-col mt-8 p-4
@@ -92,5 +95,6 @@
     {{ labels|json_script:"labels-data" }}
     {{ incomes|json_script:"incomes-data" }}
     {{ expenses|json_script:"expenses-data" }}
+    {{ categories_data|json_script:"categories-data" }}
     {% include 'expenses/partials/transaction_list.html' with title='Recent Transactions' transactions=transactions %}
 {% endblock content %}

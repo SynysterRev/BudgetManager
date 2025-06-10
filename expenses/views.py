@@ -27,16 +27,23 @@ class DashboardView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         current_date = datetime.datetime.today()
 
-        transactions = Transaction.objects.filter(user=self.request.user,
-                                                  datetime__year=current_date.year)
+        transactions = Transaction.objects.select_related('category').filter(
+            user=self.request.user,
+            datetime__year=current_date.year)
 
         monthly_data = defaultdict(lambda: {'income': 0, 'expense': 0})
+        categories_expenses = {}
         for t in transactions:
             month = t.datetime.month
             if t.transaction_type == 'income':
                 monthly_data[month]['income'] += t.amount
             else:
                 monthly_data[month]['expense'] += t.amount
+                if t.category in categories_expenses:
+                    categories_expenses[t.category]['amount'] += t.amount
+                else:
+                    categories_expenses[t.category] = {'amount': t.amount, 'name':
+                        t.category.name, 'color': t.category.color}
 
         context['monthly_income'] = monthly_data[current_date.month]['income']
         context['monthly_expense'] = monthly_data[current_date.month]['expense']
@@ -55,41 +62,33 @@ class DashboardView(LoginRequiredMixin, ListView):
 
         previous_balance = previous_month_income - previous_month_expense
 
-        context['percent_previous_balance'] = round(((context['monthly_balance'] -
-                                                      previous_balance) / previous_balance)
-                                                    * 100) if (
-                previous_balance != 0) else 100
+        context['percent_previous_balance'] = self.calculate_percentage_change(
+            context['monthly_balance'], previous_balance
+        )
 
-        context['percent_previous_income'] = round(((context['monthly_income'] -
-                                                     previous_month_income) /
-                                                    previous_month_income) * 100) if (
-                previous_month_income != 0) else 100
+        context['percent_previous_income'] = self.calculate_percentage_change(
+            context['monthly_income'], previous_month_income)
 
-        context['percent_previous_expense'] = round(((context['monthly_expense'] -
-                                                      previous_month_expense) /
-                                                     previous_month_expense) * 100) if (
-                previous_month_expense != 0) else 100
+        context['percent_previous_expense'] = self.calculate_percentage_change(
+            context['monthly_expense'], previous_month_expense)
 
-        if context['percent_previous_balance'] > 0:
-            context['diff_balance_class'] = 'text-success'
-            context['diff_balance_icon'] = '↑'
-        else:
-            context['diff_balance_class'] = 'text-alert'
-            context['diff_balance_icon'] = '↓'
+        balance_class, balance_icon = self.get_trend_info(
+            context['percent_previous_balance'])
 
-        if context['percent_previous_income'] > 0:
-            context['diff_income_class'] = 'text-success'
-            context['diff_income_icon'] = '↑'
-        else:
-            context['diff_income_class'] = 'text-alert'
-            context['diff_income_icon'] = '↓'
+        context['diff_balance_class'] = balance_class
+        context['diff_balance_icon'] = balance_icon
 
-        if context['percent_previous_expense'] < 0:
-            context['diff_expense_class'] = 'text-success'
-            context['diff_expense_icon'] = '↓'
-        else:
-            context['diff_expense_class'] = 'text-alert'
-            context['diff_expense_icon'] = '↑'
+        income_class, income_icon = self.get_trend_info(
+            context['percent_previous_income'])
+
+        context['diff_income_class'] = income_class
+        context['diff_income_icon'] = income_icon
+
+        expenses_class, expenses_icon = self.get_trend_info(
+            context['percent_previous_expense'], True)
+
+        context['diff_expense_class'] = expenses_class
+        context['diff_expense_icon'] = expenses_icon
 
         labels = []
         incomes = []
@@ -103,10 +102,29 @@ class DashboardView(LoginRequiredMixin, ListView):
         context['incomes'] = incomes
         context['expenses'] = expenses
 
+        context['categories_data'] = [data for data in categories_expenses.values()]
+
         return context
 
     def get_queryset(self):
         return Transaction.objects.order_by("datetime")[:5]
+
+    def calculate_percentage_change(self, current, previous):
+        if previous == 0:
+            return 100 if current > 0 else 0
+        return round(((current - previous) / previous) * 100)
+
+    def get_trend_info(self, percentage, is_expense=False):
+        if is_expense:
+            if percentage < 0:
+                return 'text-success', '↓'
+            else:
+                return 'text-alert', '↑'
+        else:
+            if percentage > 0:
+                return 'text-success', '↑'
+            else:
+                return 'text-alert', '↓'
 
 
 class ExpenseView(LoginRequiredMixin, TransactionFilterMixin, ListView):
